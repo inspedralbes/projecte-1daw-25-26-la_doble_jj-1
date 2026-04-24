@@ -2,7 +2,7 @@
 
 ## Descripció
 
-Aplicació web desenvolupada en PHP procedural amb MySQLi. Permet gestionar incidències informàtiques d'una empresa: registrar incidències, assignar-les a tècnics, registrar actuacions i consultar el seu estat, connectant-se a una base de dades MySQL en el servidor `dam.inspedralbes.cat`.
+Aplicació web per gestionar incidències informàtiques d'un institut. Qualsevol profesor/alumno pot obrir una incidència indicant la seva aula i descrivint el problema. El responsable informàtic la revisa, l'assigna a un tècnic segons el tipus d'avaria i li dona una prioritat. El tècnic registra les actuacions fetes fins que la incidència queda resolta.
 
 link: http://a25juaosomej.dam.inspedralbes.cat/Proyecto_Final/index.php
 
