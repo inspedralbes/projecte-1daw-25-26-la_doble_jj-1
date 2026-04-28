@@ -50,7 +50,7 @@ CREATE TABLE incidencia (
     departamento INT(11),
     tecnico INT(11),
     tipo INT(11),
-    data_finalizacion DATE,
+    data_finalizacion SYSDATE,
     prioritat ENUM('Alta', 'Media', 'Baja'),
     FOREIGN KEY (tecnico) REFERENCES tecnico(id_tecnico),
     FOREIGN KEY (tipo) REFERENCES tipo(id_tipo),
