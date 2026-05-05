@@ -48,5 +48,14 @@ $conn->close();
         else                       $estat = 'Pendent';
     ?>
     <tr>
+        
+    <form method="POST">
+        <input type="hidden" name="id_incidencia" value="<?= $i['id_incidencia'] ?>">
+        <td><?= $i['id_incidencia'] ?></td>
+        <td><?= htmlspecialchars($i['titol'] ?? '—') ?></td>
+        <td><?= htmlspecialchars($i['descripcion']) ?></td>
+        <td><?= date('d/m/Y H:i', strtotime($i['data'])) ?></td>
+        <td><?= $estat ?></td>
+        <td>
 
 
