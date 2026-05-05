@@ -56,6 +56,12 @@ $conn->close();
         <td><?= htmlspecialchars($i['descripcion']) ?></td>
         <td><?= date('d/m/Y H:i', strtotime($i['data'])) ?></td>
         <td><?= $estat ?></td>
+        
         <td>
-
-
+            <select name="prioritat">
+                <option value="">— Cap —</option>
+                <?php foreach (['Alta','Media','Baja'] as $p): ?>
+                    <option <?= $i['prioritat']===$p?'selected':'' ?>><?= $p ?></option>
+                <?php endforeach; ?>
+            </select>
+        </td>
