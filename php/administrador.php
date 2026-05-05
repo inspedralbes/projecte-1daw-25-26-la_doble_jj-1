@@ -65,3 +65,11 @@ $conn->close();
                 <?php endforeach; ?>
             </select>
         </td>
+        <td>
+            <select name="departamento">
+                <option value="">— Cap —</option>
+                <?php $departaments->data_seek(0); while ($d=$departaments->fetch_assoc()): ?>
+                    <option value="<?= $d['id_departamento'] ?>" <?= $i['departamento']==$d['id_departamento']?'selected':'' ?>><?= htmlspecialchars($d['nom']) ?></option>
+                <?php endwhile; ?>
+            </select>
+        </td>
