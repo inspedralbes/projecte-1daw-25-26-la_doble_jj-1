@@ -18,10 +18,10 @@
     <p><a href="tecnic.php">Entrar com tècnic</a></p>
 
     <!-- Opcion 3: Administrador de incidencias -->
-    <p><a href="incidencias.php"> Entrar com a Administrador </a></p>
+    <p><a href="administrador.php"> Entrar com a Administrador </a></p>
     
     <!-- Opcion 4: Lista de todas las incidencias -->
-    <p><a href="llistar.php"> Listar incidencias </a></p>
+    <p><a href="consultar.php"> Listar incidencias </a></p>
     
 </body>
 </html>
