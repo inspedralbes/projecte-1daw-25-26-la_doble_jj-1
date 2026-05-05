@@ -23,3 +23,30 @@ $departaments = $conn->query("SELECT * FROM departamento ORDER BY nom");
 $conn->close(); 
 
 
+?>
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrador</title>
+</head>
+<body>
+
+
+<h1>Administrador</h1>
+
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>ID</th><th>Títol</th><th>Descripció</th><th>Data</th><th>Estat</th>
+        <th>Prioritat</th><th>Departament</th><th>Tècnic</th><th>Tipus</th><th></th>
+    </tr>
+    <?php while ($i = $incidencies->fetch_assoc()):
+        $tancada = !is_null($i['data_finalizacion']);
+        if ($tancada)              $estat = 'Resolta';
+        elseif ($i['tecnico'])     $estat = 'En procés';
+        else                       $estat = 'Pendent';
+    ?>
+    <tr>
+
+
