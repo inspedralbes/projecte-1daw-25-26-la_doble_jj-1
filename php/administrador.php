@@ -73,3 +73,31 @@ $conn->close();
                 <?php endwhile; ?>
             </select>
         </td>
+         <td>
+            <select name="tecnico">
+                <option value="">— Cap —</option>
+                <?php $tecnics->data_seek(0); while ($t=$tecnics->fetch_assoc()): ?>
+                    <option value="<?= $t['id_tecnico'] ?>" <?= $i['tecnico']==$t['id_tecnico']?'selected':'' ?>><?= htmlspecialchars($t['nom']) ?></option>
+                <?php endwhile; ?>
+            </select>
+        </td>
+        <td>
+            <select name="tipo">
+                <option value="">— Cap —</option>
+                <?php $tipus->data_seek(0); while ($tp=$tipus->fetch_assoc()): ?>
+                    <option value="<?= $tp['id_tipo'] ?>" <?= $i['tipo']==$tp['id_tipo']?'selected':'' ?>><?= htmlspecialchars($tp['nom']) ?></option>
+                <?php endwhile; ?>
+            </select>
+        </td>
+        <td><button type="submit">Desar</button></td>
+        </form>
+    </tr>
+    <?php endwhile; ?>
+</table>
+
+
+<p><a href="index.php">Tornar</a></p>
+
+
+</body>
+</html>
