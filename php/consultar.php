@@ -44,3 +44,37 @@ $conn->close();
 <?php elseif (empty($incidencies)): ?>
    <p>No hi ha incidències registrades.</p>
 <?php else: ?>
+<table border="1" cellpadding="5" cellspacing="0">
+   <thead>
+       <tr>
+           <th>ID</th>
+           <th>Títol</th>
+           <th>Descripció</th>
+           <th>Departament</th>
+           <th>Data</th>
+           <th>Estat</th>
+       </tr>
+   </thead>
+   <tbody>
+   <?php foreach ($incidencies as $inc):
+       $tancada = !is_null($inc['data_finalizacion']);
+       if ($tancada)                    $estat = 'Resolta';
+       elseif (!empty($inc['tecnico'])) $estat = 'En procés';
+       else                             $estat = 'Pendent';
+   ?>
+   <tr>
+       <td><?= $inc['id_incidencia'] ?></td>
+       <td><?= htmlspecialchars($inc['titol'] ?? '—') ?></td>
+       <td><?= htmlspecialchars($inc['descripcion']) ?></td>
+       <td><?= htmlspecialchars($inc['departament'] ?? '—') ?></td>
+       <td><?= date('d/m/Y H:i', strtotime($inc['data'])) ?></td>
+       <td><?= $estat ?></td>
+   </tr>
+   <?php endforeach; ?>
+   </tbody>
+</table>
+
+<?php endif; ?>
+<p><a href="index.php">Tornar</a></p>
+</body>
+</html>
