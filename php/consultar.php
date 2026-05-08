@@ -34,6 +34,16 @@ if (!empty($incidencies)) {
 $conn->close();
 ?>
 
+<style>
+    .volver {
+        padding: 0.5rem; 
+        text-align: center;
+        text-decoration: none; border: 1px solid #535757; border-radius: 6px;
+        color: #1a1a1a; 
+        background : #04eff7;
+    }
+</style>
+
 <main>
 
 <h1>Consultar Incidències</h1>
@@ -92,7 +102,9 @@ $conn->close();
 
 <?php endif; ?>
 
-<p><a href="index.php">Tornar</a></p>
+    <div>
+        <p><a href="index.php" class="volver">Tornar</a></p>
+    </div>
 
 </main>
 

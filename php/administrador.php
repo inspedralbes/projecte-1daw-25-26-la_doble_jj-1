@@ -36,6 +36,13 @@ include 'header.php';
         color: #1a1a1a; font-weight: 500; transition: background 0.2s, color 0.2s;
     }
     .link-bloc:hover { background-color: #04eff7; color: #1a1414; border-color: #060707; }
+
+    .volver {
+        display: block; padding: 1rem; text-align: center;
+        text-decoration: none; border: 1px solid #535757; border-radius: 6px;
+        color: #1a1a1a; 
+        background : #04eff7;
+    }
 </style>
 
 <main>
@@ -106,12 +113,12 @@ include 'header.php';
             <?php endwhile; ?>
             </tbody>
         </table>
-        <p><a href="index.php">Tornar</a></p>
     </div>
 
     <div style="display: grid; grid-template-columns: 1fr; gap: 0.8rem; margin-top: 0.3rem;">
         <a href="informe_departamentos.php" class="link-bloc">Informe departaments</a>
         <a href="informe_tecnicos.php" class="link-bloc">Informe tècnics</a>
+        <p><a href="index.php" class="volver">Tornar</a></p>
     </div>
 
 </div>
