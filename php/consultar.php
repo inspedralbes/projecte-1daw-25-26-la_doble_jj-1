@@ -17,7 +17,6 @@ $result = $conn->query(
 );
 if ($result) while ($r = $result->fetch_assoc()) $incidencies[] = $r;
 
-// Actuacions visibles de cada incidència
 $actuacions = [];
 if (!empty($incidencies)) {
     $ids = implode(',', array_column($incidencies, 'id_incidencia'));
@@ -57,13 +56,8 @@ $conn->close();
 <table border="1" cellpadding="5" cellspacing="0">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Títol</th>
-            <th>Descripció</th>
-            <th>Departament</th>
-            <th>Data</th>
-            <th>Estat</th>
-            <th>Actuacions</th>
+            <th>ID</th><th>Títol</th><th>Descripció</th><th>Departament</th>
+            <th>Data</th><th>Estat</th><th>Actuacions</th>
         </tr>
     </thead>
     <tbody>
@@ -102,5 +96,4 @@ $conn->close();
 
 </main>
 
-</body>
-</html>
+<?php include 'footer.php'; ?>

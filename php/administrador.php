@@ -31,21 +31,11 @@ include 'header.php';
 
 <style>
     .link-bloc {
-        display: block;
-        padding: 1rem;
-        text-align: center;
-        text-decoration: none;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        color: #1a1a1a;
-        font-weight: 500;
-        transition: background 0.2s, color 0.2s;
+        display: block; padding: 1rem; text-align: center;
+        text-decoration: none; border: 1px solid #ccc; border-radius: 6px;
+        color: #1a1a1a; font-weight: 500; transition: background 0.2s, color 0.2s;
     }
-    .link-bloc:hover {
-        background-color: #04eff7;
-        color: #1a1414;
-        border-color: #060707;
-    }
+    .link-bloc:hover { background-color: #04eff7; color: #1a1414; border-color: #060707; }
 </style>
 
 <main>
@@ -70,11 +60,9 @@ include 'header.php';
                 else                   $estat = 'Pendent';
                 $form_id = 'form-inc-' . $i['id_incidencia'];
             ?>
-
             <form id="<?= $form_id ?>" method="POST" action="administrador.php">
                 <input type="hidden" name="id_incidencia" value="<?= $i['id_incidencia'] ?>">
             </form>
-
             <tr>
                 <td><?= $i['id_incidencia'] ?></td>
                 <td><?= htmlspecialchars($i['titol'] ?? '—') ?></td>
@@ -115,16 +103,13 @@ include 'header.php';
                 </td>
                 <td><button type="submit" form="<?= $form_id ?>">Desar</button></td>
             </tr>
-
             <?php endwhile; ?>
             </tbody>
         </table>
-
         <p><a href="index.php">Tornar</a></p>
     </div>
 
     <div style="display: grid; grid-template-columns: 1fr; gap: 0.8rem; margin-top: 0.3rem;">
-        <a href="Estadistiques.php" class="link-bloc">Estadístiques</a>
         <a href="informe_departamentos.php" class="link-bloc">Informe departaments</a>
         <a href="informe_tecnicos.php" class="link-bloc">Informe tècnics</a>
     </div>
@@ -133,5 +118,4 @@ include 'header.php';
 
 </main>
 
-</body>
-</html>
+<?php include 'footer.php'; ?>

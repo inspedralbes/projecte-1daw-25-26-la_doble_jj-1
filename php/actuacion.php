@@ -1,5 +1,4 @@
 <?php include 'header.php'; ?>
-
 <?php
 date_default_timezone_set('Europe/Madrid');
 require_once 'conexion.php';
@@ -44,30 +43,24 @@ $conn->close();
 <?php if ($error): ?><p><?= htmlspecialchars($error) ?></p><?php endif; ?>
 
 <form method="POST" action="actuacion.php?id=<?= $id ?>">
-
     <p>
         <label for="descripcion">Descripció</label><br>
         <textarea id="descripcion" name="descripcion" rows="5" cols="40"><?= (isset($_POST['descripcion']) && $error) ? htmlspecialchars($_POST['descripcion']) : '' ?></textarea>
     </p>
-
     <p>
         <label for="tiempo">Temps (minuts)</label><br>
         <input type="number" id="tiempo" name="tiempo" min="1"
                value="<?= (isset($_POST['tiempo']) && $error) ? intval($_POST['tiempo']) : '' ?>">
     </p>
-
     <p>
-        <input type="checkbox" id="visible" name="visible" <?= (isset($_POST['visible'])) ? 'checked' : '' ?>>
+        <input type="checkbox" id="visible" name="visible" <?= isset($_POST['visible']) ? 'checked' : '' ?>>
         <label for="visible">Visible per l'usuari</label>
     </p>
-
     <p><button type="submit">Guardar</button></p>
-
 </form>
 
 <p><a href="index.php">Tornar</a></p>
 
 </main>
 
-</body>
-</html>
+<?php include 'footer.php'; ?>

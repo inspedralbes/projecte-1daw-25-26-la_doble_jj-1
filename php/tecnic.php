@@ -86,15 +86,8 @@ $conn->close();
 <table border="2" cellpadding="9" cellspacing="10">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Títol</th>
-            <th>Descripció</th>
-            <th>Departament</th>
-            <th>Prioritat</th>
-            <th>Data</th>
-            <th>Estat actual</th>
-            <th>Canviar estat</th>
-            <th>Actuació</th>
+            <th>ID</th><th>Títol</th><th>Descripció</th><th>Departament</th>
+            <th>Prioritat</th><th>Data</th><th>Estat actual</th><th>Canviar estat</th><th>Actuació</th>
         </tr>
     </thead>
     <tbody>
@@ -114,7 +107,7 @@ $conn->close();
         <td><?= $estat ?></td>
         <td>
             <form method="POST" action="tecnic.php?id=<?= $id_tecnico ?>">
-                <input type="hidden" name="id_incidencia"    value="<?= $inc['id_incidencia'] ?>">
+                <input type="hidden" name="id_incidencia"     value="<?= $inc['id_incidencia'] ?>">
                 <input type="hidden" name="id_tecnico_actual" value="<?= $id_tecnico ?>">
                 <select name="estat">
                     <option value="Pendent"   <?= $estat === 'Pendent'   ? 'selected' : '' ?>>Pendent</option>
@@ -139,5 +132,4 @@ $conn->close();
 
 </main>
 
-</body>
-</html>
+<?php include 'footer.php'; ?>
