@@ -29,99 +29,84 @@ $conn->close();
 include 'header.php';
 ?>
 
-<style>
-    .link-bloc {
-        display: block; padding: 1rem; text-align: center;
-        text-decoration: none; border: 1px solid #ccc; border-radius: 6px;
-        color: #1a1a1a; font-weight: 500; transition: background 0.2s, color 0.2s;
-    }
-    .link-bloc:hover { background-color: #04eff7; color: #1a1414; border-color: #060707; }
-
-    .volver {
-        display: block; padding: 1rem; text-align: center;
-        text-decoration: none; border: 1px solid #535757; border-radius: 6px;
-        color: #1a1a1a; 
-        background : #04eff7;
-    }
-</style>
-
 <main>
 
-<h1>Administrador</h1>
-
-<div style="display: grid; grid-template-columns: 1fr 160px; gap: 2rem; align-items: start;">
-
-    <div>
-        <table border="1" cellpadding="5">
-            <thead>
-                <tr>
-                    <th>ID</th><th>Títol</th><th>Descripció</th><th>Data</th><th>Estat</th>
-                    <th>Prioritat</th><th>Departament</th><th>Tècnic</th><th>Tipus</th><th></th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php while ($i = $incidencies->fetch_assoc()):
-                $tancada = !is_null($i['data_finalizacion']);
-                if ($tancada)          $estat = 'Resolta';
-                elseif ($i['tecnico']) $estat = 'En procés';
-                else                   $estat = 'Pendent';
-                $form_id = 'form-inc-' . $i['id_incidencia'];
-            ?>
-            <form id="<?= $form_id ?>" method="POST" action="administrador.php">
-                <input type="hidden" name="id_incidencia" value="<?= $i['id_incidencia'] ?>">
-            </form>
-            <tr>
-                <td><?= $i['id_incidencia'] ?></td>
-                <td><?= htmlspecialchars($i['titol'] ?? '—') ?></td>
-                <td><?= htmlspecialchars($i['descripcion']) ?></td>
-                <td><?= date('d/m/Y H:i', strtotime($i['data'])) ?></td>
-                <td><?= $estat ?></td>
-                <td>
-                    <select name="prioritat" form="<?= $form_id ?>">
-                        <option value="">Cap</option>
-                        <?php foreach (['Alta','Media','Baja'] as $p): ?>
-                            <option value="<?= $p ?>" <?= $i['prioritat'] === $p ? 'selected' : '' ?>><?= $p ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </td>
-                <td>
-                    <select name="departamento" form="<?= $form_id ?>">
-                        <option value="">Cap</option>
-                        <?php $departaments->data_seek(0); while ($d = $departaments->fetch_assoc()): ?>
-                            <option value="<?= $d['id_departamento'] ?>" <?= $i['departamento'] == $d['id_departamento'] ? 'selected' : '' ?>><?= htmlspecialchars($d['nom']) ?></option>
-                        <?php endwhile; ?>
-                    </select>
-                </td>
-                <td>
-                    <select name="tecnico" form="<?= $form_id ?>">
-                        <option value="">Cap</option>
-                        <?php $tecnics->data_seek(0); while ($t = $tecnics->fetch_assoc()): ?>
-                            <option value="<?= $t['id_tecnico'] ?>" <?= $i['tecnico'] == $t['id_tecnico'] ? 'selected' : '' ?>><?= htmlspecialchars($t['nom']) ?></option>
-                        <?php endwhile; ?>
-                    </select>
-                </td>
-                <td>
-                    <select name="tipo" form="<?= $form_id ?>">
-                        <option value="">Cap</option>
-                        <?php $tipus->data_seek(0); while ($tp = $tipus->fetch_assoc()): ?>
-                            <option value="<?= $tp['id_tipo'] ?>" <?= $i['tipo'] == $tp['id_tipo'] ? 'selected' : '' ?>><?= htmlspecialchars($tp['nom']) ?></option>
-                        <?php endwhile; ?>
-                    </select>
-                </td>
-                <td><button type="submit" form="<?= $form_id ?>">Desar</button></td>
-            </tr>
-            <?php endwhile; ?>
-            </tbody>
-        </table>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Administrador</h1>
+    <div class="d-flex flex-column gap-2" style="min-width:180px">
+        <a href="informe_departamentos.php" class="btn btn-outline-primary btn-sm">Informe departaments</a>
+        <a href="informe_tecnicos.php" class="btn btn-outline-primary btn-sm">Informe tècnics</a>
     </div>
-
-    <div style="display: grid; grid-template-columns: 1fr; gap: 0.8rem; margin-top: 0.3rem;">
-        <a href="informe_departamentos.php" class="link-bloc">Informe departaments</a>
-        <a href="informe_tecnicos.php" class="link-bloc">Informe tècnics</a>
-        <p><a href="index.php" class="volver">Tornar</a></p>
-    </div>
-
 </div>
+
+<div class="table-responsive">
+<table class="table table-bordered table-hover align-middle">
+    <thead class="table-primary">
+        <tr>
+            <th>ID</th><th>Títol</th><th>Descripció</th><th>Data</th><th>Estat</th>
+            <th>Prioritat</th><th>Departament</th><th>Tècnic</th><th>Tipus</th><th></th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php while ($i = $incidencies->fetch_assoc()):
+        $tancada = !is_null($i['data_finalizacion']);
+        if ($tancada)          $estat = 'Resolta';
+        elseif ($i['tecnico']) $estat = 'En procés';
+        else                   $estat = 'Pendent';
+        if ($estat === 'Resolta')       $badge = 'success';
+        elseif ($estat === 'En procés') $badge = 'warning';
+        else                            $badge = 'secondary';
+        $form_id = 'form-' . $i['id_incidencia'];
+    ?>
+    <form id="<?= $form_id ?>" method="POST" action="administrador.php">
+        <input type="hidden" name="id_incidencia" value="<?= $i['id_incidencia'] ?>">
+    </form>
+    <tr>
+        <td><?= $i['id_incidencia'] ?></td>
+        <td><?= htmlspecialchars($i['titol'] ?? '—') ?></td>
+        <td><?= htmlspecialchars($i['descripcion']) ?></td>
+        <td><?= date('d/m/Y H:i', strtotime($i['data'])) ?></td>
+        <td><span class="badge bg-<?= $badge ?>"><?= $estat ?></span></td>
+        <td>
+            <select name="prioritat" form="<?= $form_id ?>" class="form-select form-select-sm">
+                <option value="">—</option>
+                <?php foreach (['Alta','Media','Baja'] as $p): ?>
+                    <option value="<?= $p ?>" <?= $i['prioritat'] === $p ? 'selected' : '' ?>><?= $p ?></option>
+                <?php endforeach; ?>
+            </select>
+        </td>
+        <td>
+            <select name="departamento" form="<?= $form_id ?>" class="form-select form-select-sm">
+                <option value="">—</option>
+                <?php $departaments->data_seek(0); while ($d = $departaments->fetch_assoc()): ?>
+                    <option value="<?= $d['id_departamento'] ?>" <?= $i['departamento'] == $d['id_departamento'] ? 'selected' : '' ?>><?= htmlspecialchars($d['nom']) ?></option>
+                <?php endwhile; ?>
+            </select>
+        </td>
+        <td>
+            <select name="tecnico" form="<?= $form_id ?>" class="form-select form-select-sm">
+                <option value="">—</option>
+                <?php $tecnics->data_seek(0); while ($t = $tecnics->fetch_assoc()): ?>
+                    <option value="<?= $t['id_tecnico'] ?>" <?= $i['tecnico'] == $t['id_tecnico'] ? 'selected' : '' ?>><?= htmlspecialchars($t['nom']) ?></option>
+                <?php endwhile; ?>
+            </select>
+        </td>
+        <td>
+            <select name="tipo" form="<?= $form_id ?>" class="form-select form-select-sm">
+                <option value="">—</option>
+                <?php $tipus->data_seek(0); while ($tp = $tipus->fetch_assoc()): ?>
+                    <option value="<?= $tp['id_tipo'] ?>" <?= $i['tipo'] == $tp['id_tipo'] ? 'selected' : '' ?>><?= htmlspecialchars($tp['nom']) ?></option>
+                <?php endwhile; ?>
+            </select>
+        </td>
+        <td><button type="submit" form="<?= $form_id ?>" class="btn btn-primary btn-sm">Desar</button></td>
+    </tr>
+    <?php endwhile; ?>
+    </tbody>
+</table>
+</div>
+
+<a href="index.php" class="btn btn-secondary mt-2">Tornar</a>
 
 </main>
 

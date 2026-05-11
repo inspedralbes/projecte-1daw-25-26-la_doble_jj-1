@@ -17,11 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_incidencia'])) {
         $sql = "UPDATE incidencia SET data_finalizacion=NULL WHERE id_incidencia=$id";
     }
 
-    if ($conn->query($sql)) {
-        $missatge = "Incidència #$id actualitzada.";
-    } else {
-        $error = "Error: " . $conn->error;
-    }
+    if ($conn->query($sql)) $missatge = "Incidència #$id actualitzada.";
+    else $error = "Error: " . $conn->error;
 }
 
 $tecnics = [];
@@ -29,9 +26,7 @@ $res_tec = $conn->query("SELECT id_tecnico, nom FROM tecnico ORDER BY nom");
 if ($res_tec) while ($r = $res_tec->fetch_assoc()) $tecnics[] = $r;
 
 $id_tecnico = isset($_GET['id']) ? intval($_GET['id']) : 0;
-if ($id_tecnico === 0 && isset($_POST['id_tecnico_actual'])) {
-    $id_tecnico = intval($_POST['id_tecnico_actual']);
-}
+if ($id_tecnico === 0 && isset($_POST['id_tecnico_actual'])) $id_tecnico = intval($_POST['id_tecnico_actual']);
 
 $incidencies = [];
 $nom_tecnic  = '';
@@ -40,62 +35,52 @@ if ($id_tecnico > 0) {
     foreach ($tecnics as $t) {
         if ($t['id_tecnico'] == $id_tecnico) { $nom_tecnic = $t['nom']; break; }
     }
-
     $result = $conn->query(
         "SELECT i.id_incidencia, i.titol, i.descripcion, i.data, i.prioritat,
                 i.data_finalizacion, i.tecnico, d.nom AS departament
          FROM incidencia i
          LEFT JOIN departamento d ON i.departamento = d.id_departamento
-         WHERE i.tecnico = $id_tecnico
-         ORDER BY i.data DESC"
+         WHERE i.tecnico = $id_tecnico ORDER BY i.data DESC"
     );
     if ($result) while ($r = $result->fetch_assoc()) $incidencies[] = $r;
 }
 
 $conn->close();
 ?>
-<style>
-    .volver {
-        padding: 0.5rem; 
-        text-align: center;
-        text-decoration: none; border: 1px solid #535757; border-radius: 6px;
-        color: #1a1a1a; 
-        background : #04eff7;
-    }
-</style>
+
 <main>
 
-<h1>Àrea del Tècnic</h1>
+<h1 class="mb-4">Àrea del Tècnic</h1>
 
-<?php if ($missatge): ?><p><?= htmlspecialchars($missatge) ?></p><?php endif; ?>
-<?php if ($error): ?><p><?= htmlspecialchars($error) ?></p><?php endif; ?>
+<?php if ($missatge): ?><div class="alert alert-success"><?= htmlspecialchars($missatge) ?></div><?php endif; ?>
+<?php if ($error): ?><div class="alert alert-danger"><?= htmlspecialchars($error) ?></div><?php endif; ?>
 
-<form method="GET" action="tecnic.php">
-    <label for="id">Selecciona el teu nom:</label>
-    <select id="id" name="id">
-        <option value="">Tria</option>
+<form method="GET" action="tecnic.php" class="d-flex gap-2 mb-4">
+    <select name="id" class="form-select w-auto">
+        <option value="">— Tria un tècnic —</option>
         <?php foreach ($tecnics as $t): ?>
             <option value="<?= $t['id_tecnico'] ?>" <?= $id_tecnico == $t['id_tecnico'] ? 'selected' : '' ?>>
                 <?= htmlspecialchars($t['nom']) ?>
             </option>
         <?php endforeach; ?>
     </select>
-    <button type="submit">Entrar</button>
+    <button type="submit" class="btn btn-primary">Entrar</button>
 </form>
 
 <?php if ($id_tecnico > 0): ?>
 
-<h2><?= htmlspecialchars($nom_tecnic) ?></h2>
+<h4 class="mb-3"><?= htmlspecialchars($nom_tecnic) ?></h4>
 
 <?php if (empty($incidencies)): ?>
-    <p>No tens incidències assignades</p>
+    <div class="alert alert-info">No tens incidències assignades.</div>
 <?php else: ?>
 
-<table border="2" cellpadding="9" cellspacing="10">
-    <thead>
+<div class="table-responsive">
+<table class="table table-bordered table-hover align-middle">
+    <thead class="table-primary">
         <tr>
             <th>ID</th><th>Títol</th><th>Descripció</th><th>Departament</th>
-            <th>Prioritat</th><th>Data</th><th>Estat actual</th><th>Canviar estat</th><th>Actuació</th>
+            <th>Prioritat</th><th>Data</th><th>Estat</th><th>Canviar estat</th><th>Actuació</th>
         </tr>
     </thead>
     <tbody>
@@ -104,6 +89,9 @@ $conn->close();
         if ($tancada)                    $estat = 'Resolta';
         elseif (!empty($inc['tecnico'])) $estat = 'En procés';
         else                             $estat = 'Pendent';
+        if ($estat === 'Resolta')       $badge = 'success';
+        elseif ($estat === 'En procés') $badge = 'warning';
+        else                            $badge = 'secondary';
     ?>
     <tr>
         <td><?= $inc['id_incidencia'] ?></td>
@@ -112,34 +100,32 @@ $conn->close();
         <td><?= htmlspecialchars($inc['departament'] ?? '—') ?></td>
         <td><?= htmlspecialchars($inc['prioritat'] ?? '—') ?></td>
         <td><?= date('d/m/Y H:i', strtotime($inc['data'])) ?></td>
-        <td><?= $estat ?></td>
+        <td><span class="badge bg-<?= $badge ?>"><?= $estat ?></span></td>
         <td>
-            <form method="POST" action="tecnic.php?id=<?= $id_tecnico ?>">
+            <form method="POST" action="tecnic.php?id=<?= $id_tecnico ?>" class="d-flex gap-1">
                 <input type="hidden" name="id_incidencia"     value="<?= $inc['id_incidencia'] ?>">
                 <input type="hidden" name="id_tecnico_actual" value="<?= $id_tecnico ?>">
-                <select name="estat">
+                <select name="estat" class="form-select form-select-sm">
                     <option value="Pendent"   <?= $estat === 'Pendent'   ? 'selected' : '' ?>>Pendent</option>
                     <option value="En procés" <?= $estat === 'En procés' ? 'selected' : '' ?>>En procés</option>
                     <option value="Resolta"   <?= $estat === 'Resolta'   ? 'selected' : '' ?>>Resolta</option>
                 </select>
-                <button type="submit">Guardar</button>
+                <button type="submit" class="btn btn-primary btn-sm">Desar</button>
             </form>
         </td>
         <td>
-            <a href="actuacion.php?id=<?= $inc['id_incidencia'] ?>"><button>Afegir actuació</button></a>
+            <a href="actuacion.php?id=<?= $inc['id_incidencia'] ?>" class="btn btn-outline-secondary btn-sm">Afegir actuació</a>
         </td>
     </tr>
     <?php endforeach; ?>
     </tbody>
 </table>
+</div>
 
 <?php endif; ?>
 <?php endif; ?>
 
-     <div>
-        <p><a href="index.php" class="volver">Tornar</a></p>
-    </div>
-
+<a href="index.php" class="btn btn-secondary mt-2">Tornar</a>
 
 </main>
 

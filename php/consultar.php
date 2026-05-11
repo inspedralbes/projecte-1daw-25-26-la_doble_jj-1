@@ -34,40 +34,36 @@ if (!empty($incidencies)) {
 $conn->close();
 ?>
 
-<style>
-    .volver {
-        padding: 0.5rem; 
-        text-align: center;
-        text-decoration: none; border: 1px solid #535757; border-radius: 6px;
-        color: #1a1a1a; 
-        background : #04eff7;
-    }
-</style>
-
 <main>
 
-<h1>Consultar Incidències</h1>
+<h1 class="mb-4">Consultar Incidències</h1>
 
-<form method="GET" action="consultar.php">
-    <label for="id">Número d'incidència:</label>
-    <input type="number" id="id" name="id" min="1" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
-    <button type="submit">Buscar</button>
+<form method="GET" action="consultar.php" class="d-flex gap-2 mb-4">
+    <input type="number" name="id" min="1" class="form-control w-auto"
+           placeholder="Número d'incidència" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
+    <button type="submit" class="btn btn-primary">Buscar</button>
     <?php if ($buscar_id): ?>
-        <a href="consultar.php">Veure totes</a>
+        <a href="consultar.php" class="btn btn-outline-secondary">Veure totes</a>
     <?php endif; ?>
 </form>
 
 <?php if ($buscar_id && empty($incidencies)): ?>
-    <p>No s'ha trobat cap incidència amb l'ID #<?= $buscar_id ?>.</p>
+    <div class="alert alert-warning">No s'ha trobat cap incidència amb l'ID #<?= $buscar_id ?>.</div>
 <?php elseif (empty($incidencies)): ?>
-    <p>No hi ha incidències registrades.</p>
+    <div class="alert alert-info">No hi ha incidències registrades.</div>
 <?php else: ?>
 
-<table border="1" cellpadding="5" cellspacing="0">
-    <thead>
+<div class="table-responsive">
+<table class="table table-bordered table-hover align-middle">
+    <thead class="table-primary">
         <tr>
-            <th>ID</th><th>Títol</th><th>Descripció</th><th>Departament</th>
-            <th>Data</th><th>Estat</th><th>Actuacions</th>
+            <th>ID</th>
+            <th>Títol</th>
+            <th>Descripció</th>
+            <th>Departament</th>
+            <th>Data</th>
+            <th>Estat</th>
+            <th>Actuacions</th>
         </tr>
     </thead>
     <tbody>
@@ -76,6 +72,10 @@ $conn->close();
         if ($tancada)                    $estat = 'Resolta';
         elseif (!empty($inc['tecnico'])) $estat = 'En procés';
         else                             $estat = 'Pendent';
+
+        if ($estat === 'Resolta')   $badge = 'success';
+        elseif ($estat === 'En procés') $badge = 'warning';
+        else                        $badge = 'secondary';
     ?>
     <tr>
         <td><?= $inc['id_incidencia'] ?></td>
@@ -83,28 +83,27 @@ $conn->close();
         <td><?= htmlspecialchars($inc['descripcion']) ?></td>
         <td><?= htmlspecialchars($inc['departament'] ?? '—') ?></td>
         <td><?= date('d/m/Y H:i', strtotime($inc['data'])) ?></td>
-        <td><?= $estat ?></td>
+        <td><span class="badge bg-<?= $badge ?>"><?= $estat ?></span></td>
         <td>
             <?php if (!empty($actuacions[$inc['id_incidencia']])): ?>
                 <?php foreach ($actuacions[$inc['id_incidencia']] as $a): ?>
-                    <p style="margin:2px 0">
-                        <small><?= date('d/m/Y H:i', strtotime($a['data'])) ?> (<?= $a['tiempo'] ?> min) — <?= htmlspecialchars($a['descripcion']) ?></small>
-                    </p>
+                    <small class="d-block text-muted">
+                        <?= date('d/m/Y H:i', strtotime($a['data'])) ?> (<?= $a['tiempo'] ?> min) — <?= htmlspecialchars($a['descripcion']) ?>
+                    </small>
                 <?php endforeach; ?>
             <?php else: ?>
-                —
+                <span class="text-muted">—</span>
             <?php endif; ?>
         </td>
     </tr>
     <?php endforeach; ?>
     </tbody>
 </table>
+</div>
 
 <?php endif; ?>
 
-    <div>
-        <p><a href="index.php" class="volver">Tornar</a></p>
-    </div>
+<a href="index.php" class="btn btn-secondary mt-2">Tornar</a>
 
 </main>
 

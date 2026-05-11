@@ -13,16 +13,16 @@ $result = $conn->query(
      GROUP BY d.id_departamento, d.nom
      ORDER BY total DESC"
 );
-
 $conn->close();
 ?>
 
 <main>
 
-<h1>Informe per Departaments</h1>
+<h1 class="mb-4">Informe per Departaments</h1>
 
-<table border="1" cellpadding="5" cellspacing="0">
-    <thead>
+<div class="table-responsive">
+<table class="table table-bordered table-hover align-middle">
+    <thead class="table-primary">
         <tr>
             <th>Departament</th>
             <th>Total incidències</th>
@@ -41,8 +41,9 @@ $conn->close();
     <?php endwhile; ?>
     </tbody>
 </table>
+</div>
 
-<p><a href="administrador.php">Tornar</a></p>
+<a href="administrador.php" class="btn btn-secondary mt-2">Tornar</a>
 
 </main>
 

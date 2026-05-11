@@ -26,16 +26,16 @@ $acts_per_tecnic = [];
 while ($a = $actuacions->fetch_assoc()) {
     $acts_per_tecnic[$a['tecnic']][] = $a;
 }
-
 $conn->close();
 ?>
 
 <main>
 
-<h1>Informe de Tècnics</h1>
+<h1 class="mb-4">Informe de Tècnics</h1>
 
-<table border="1" cellpadding="5" cellspacing="0">
-    <thead>
+<div class="table-responsive">
+<table class="table table-bordered table-hover align-middle">
+    <thead class="table-primary">
         <tr>
             <th>Tècnic</th>
             <th>Total incidències</th>
@@ -54,20 +54,21 @@ $conn->close();
         <td>
             <?php if (!empty($acts_per_tecnic[$r['tecnic']])): ?>
                 <?php foreach ($acts_per_tecnic[$r['tecnic']] as $a): ?>
-                    <p style="margin:2px 0">
-                        <small><?= date('d/m/Y', strtotime($a['data'])) ?> || <?= htmlspecialchars($a['descripcion']) ?></small>
-                    </p>
+                    <small class="d-block text-muted">
+                        <?= date('d/m/Y', strtotime($a['data'])) ?> || <?= htmlspecialchars($a['descripcion']) ?>
+                    </small>
                 <?php endforeach; ?>
             <?php else: ?>
-                —
+                <span class="text-muted">—</span>
             <?php endif; ?>
         </td>
     </tr>
     <?php endwhile; ?>
     </tbody>
 </table>
+</div>
 
-<p><a href="administrador.php">Tornar</a></p>
+<a href="administrador.php" class="btn btn-secondary mt-2">Tornar</a>
 
 </main>
 

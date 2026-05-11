@@ -1,5 +1,4 @@
 <?php
-// Connexió a la base de dades
 $host     = "db";
 $user     = "usuari";
 $password = "paraula_de_pas";

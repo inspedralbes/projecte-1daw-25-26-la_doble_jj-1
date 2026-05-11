@@ -47,7 +47,7 @@ $conn->close();
 <h1>Registrar Nova Incidència</h1>
 
 <?php if ($missatge): ?>
-    <p><?= $missatge ?> — Guarda aquest número per consultar l'estat.</p>
+    <p><?= $missatge ?>  Guarda aquest número per consultar l'estat.</p>
 <?php endif; ?>
 
 <?php if ($error): ?>
