@@ -43,7 +43,7 @@ $conn->close();
            placeholder="Número d'incidència" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
     <button type="submit" class="btn btn-primary">Buscar</button>
     <?php if ($buscar_id): ?>
-        <a href="consultar.php" class="btn btn-outline-secondary">Veure totes</a>
+        <a href="consultar.php" class="btn btn-primary">Veure totes</a>
     <?php endif; ?>
 </form>
 

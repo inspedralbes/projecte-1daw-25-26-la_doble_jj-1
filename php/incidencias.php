@@ -38,7 +38,7 @@ $conn->close();
         text-align: center;
         text-decoration: none; border: 1px solid #535757; border-radius: 6px;
         color: #1a1a1a; 
-        background : #04eff7;
+        background : #2780e3;
     }
 </style>
 
@@ -54,7 +54,7 @@ $conn->close();
     <p><?= htmlspecialchars($error) ?></p>
 <?php endif; ?>
 
-<form method="POST" action="incidencias.php">
+<form method="POST" action="incidencias.php" onsubmit="return validar()">
     <p>
         <label for="titol">Títol</label><br>
         <input type="text" id="titol" name="titol" maxlength="150"
@@ -76,13 +76,40 @@ $conn->close();
         <label for="descripcion">Descripció</label><br>
         <textarea id="descripcion" name="descripcion" rows="5" cols="40"><?= (isset($_POST['descripcion']) && $error) ? htmlspecialchars($_POST['descripcion']) : '' ?></textarea>
     </p>
-    <p><button type="submit">Enviar</button></p>
+    <p id="error-js" style="color:red; display:none"></p>
+    <button type="submit" class="btn btn-primary">Buscar</button>
 </form>
 
-    <div>
-        <p><a href="index.php" class="volver">Tornar</a></p>
-    </div>
+<div>
+    <a href="index.php" class="btn btn-secondary mt-2">Tornar</a>
+</div>
 
 </main>
+
+<script>
+function validar() {
+    var titol = document.getElementById('titol').value;
+    var departamento = document.getElementById('departamento').value;
+    var descripcion = document.getElementById('descripcion').value;
+    var error = document.getElementById('error-js');
+
+    if (titol == '') {
+        error.innerText = 'El títol no pot estar buit.';
+        error.style.display = 'block';
+        return false;
+    }
+    if (departamento == '') {
+        error.innerText = 'Has de seleccionar un departament.';
+        error.style.display = 'block';
+        return false;
+    }
+    if (descripcion == '') {
+        error.innerText = 'La descripció no pot estar buida.';
+        error.style.display = 'block';
+        return false;
+    }
+    return true;
+}
+</script>
 
 <?php include 'footer.php'; ?>

@@ -9,7 +9,7 @@
     }
 
     h1 { 
-         color: #06bbf1; 
+         color: #2780e3; 
          margin-bottom: 2rem; 
          font-size: 1.8rem; 
          letter-spacing: 1px;     
@@ -40,7 +40,7 @@
     }
 
     .bloc:hover { 
-        background-color: #04eff7; 
+        background-color: #2780e3; 
         border-color: #080808; 
         color: #1a1414; 
     }

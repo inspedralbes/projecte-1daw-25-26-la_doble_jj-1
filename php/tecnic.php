@@ -57,7 +57,7 @@ $conn->close();
 
 <form method="GET" action="tecnic.php" class="d-flex gap-2 mb-4">
     <select name="id" class="form-select w-auto">
-        <option value="">— Tria un tècnic —</option>
+        <option value="">Tria el teu nom</option>
         <?php foreach ($tecnics as $t): ?>
             <option value="<?= $t['id_tecnico'] ?>" <?= $id_tecnico == $t['id_tecnico'] ? 'selected' : '' ?>>
                 <?= htmlspecialchars($t['nom']) ?>
@@ -98,7 +98,16 @@ $conn->close();
         <td><?= htmlspecialchars($inc['titol'] ?? '—') ?></td>
         <td><?= htmlspecialchars($inc['descripcion']) ?></td>
         <td><?= htmlspecialchars($inc['departament'] ?? '—') ?></td>
-        <td><?= htmlspecialchars($inc['prioritat'] ?? '—') ?></td>
+        <td>
+            <?php
+            $p = $inc['prioritat'] ?? '';
+            if ($p === 'Alta')       $pbadge = 'danger';
+            elseif ($p === 'Media')  $pbadge = 'warning';
+            elseif ($p === 'Baja')   $pbadge = 'info';
+            else                     $pbadge = '';
+            ?>
+            <?= $p ? "<span class='badge bg-$pbadge'>$p</span>" : '—' ?>
+        </td>
         <td><?= date('d/m/Y H:i', strtotime($inc['data'])) ?></td>
         <td><span class="badge bg-<?= $badge ?>"><?= $estat ?></span></td>
         <td>
@@ -114,7 +123,7 @@ $conn->close();
             </form>
         </td>
         <td>
-            <a href="actuacion.php?id=<?= $inc['id_incidencia'] ?>" class="btn btn-outline-secondary btn-sm">Afegir actuació</a>
+            <a href="actuacion.php?id=<?= $inc['id_incidencia'] ?>" class="btn btn-primary btn-sm">Afegir actuació</a>
         </td>
     </tr>
     <?php endforeach; ?>

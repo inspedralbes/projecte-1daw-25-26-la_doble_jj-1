@@ -1,4 +1,5 @@
 <?php include 'header.php'; ?>
+
 <?php
 date_default_timezone_set('Europe/Madrid');
 require_once 'conexion.php';
@@ -42,10 +43,11 @@ $conn->close();
 <?php if ($missatge): ?><p><?= htmlspecialchars($missatge) ?></p><?php endif; ?>
 <?php if ($error): ?><p><?= htmlspecialchars($error) ?></p><?php endif; ?>
 
-<form method="POST" action="actuacion.php?id=<?= $id ?>">
+<form method="POST" action="actuacion.php?id=<?= $id ?>" onsubmit="return validar()">
     <p>
         <label for="descripcion">Descripció</label><br>
         <textarea id="descripcion" name="descripcion" rows="5" cols="40"><?= (isset($_POST['descripcion']) && $error) ? htmlspecialchars($_POST['descripcion']) : '' ?></textarea>
+        <br><small id="contador" style="color:gray">0 caràcters (mínim 20)</small>
     </p>
     <p>
         <label for="tiempo">Temps (minuts)</label><br>
@@ -56,11 +58,43 @@ $conn->close();
         <input type="checkbox" id="visible" name="visible" <?= isset($_POST['visible']) ? 'checked' : '' ?>>
         <label for="visible">Visible per l'usuari</label>
     </p>
-    <p><button type="submit">Guardar</button></p>
+    <p id="error-js" style="color:red; display:none"></p>
+    <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
 
-<p><a href="index.php">Tornar</a></p>
+<a href="index.php" class="btn btn-secondary mt-2">Tornar</a>
 
 </main>
+
+<script>
+document.getElementById('descripcion').addEventListener('input', function() {
+    var total = this.value.length;
+    var contador = document.getElementById('contador');
+    contador.innerText = total + ' caràcters (mínim 20)';
+    if (total >= 20) {
+        contador.style.color = 'green';
+    } else {
+        contador.style.color = 'red';
+    }
+});
+
+function validar() {
+    var descripcion = document.getElementById('descripcion').value;
+    var tiempo = document.getElementById('tiempo').value;
+    var error = document.getElementById('error-js');
+
+    if (descripcion.length < 20) {
+        error.innerText = 'La descripció ha de tenir almenys 20 caràcters.';
+        error.style.display = 'block';
+        return false;
+    }
+    if (tiempo == '' || tiempo <= 0) {
+        error.innerText = 'Has d\'introduir el temps en minuts.';
+        error.style.display = 'block';
+        return false;
+    }
+    return true;
+}
+</script>
 
 <?php include 'footer.php'; ?>
