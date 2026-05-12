@@ -48,6 +48,7 @@
     .bloc:hover i { 
         color: #1a1414; 
         }
+        
 </style>
 
 <?php include 'header.php'; ?>

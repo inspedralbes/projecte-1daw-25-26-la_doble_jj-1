@@ -12,9 +12,9 @@
 </head>
 <body>
 
-<nav class="navbar navbar-dark bg-primary px-4">
+<nav class="navbar navbar-dark bg-primary px-4" role="navigation" aria-label="Navegació principal">
   <a class="navbar-brand" href="index.php">
-    <i class="bi bi-building me-2"></i>Institut Pedralbes
+    <i class="bi bi-building me-2" aria-hidden="true"></i>Institut Pedralbes
   </a>
 </nav>
 

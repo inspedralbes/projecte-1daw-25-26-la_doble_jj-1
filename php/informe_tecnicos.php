@@ -35,13 +35,14 @@ $conn->close();
 
 <div class="table-responsive">
 <table class="table table-bordered table-hover align-middle">
+    <caption>Resum d'incidències resoltes i temps per tècnic</caption>
     <thead class="table-primary">
         <tr>
-            <th>Tècnic</th>
-            <th>Total incidències</th>
-            <th>Resoltes</th>
-            <th>Temps total (min)</th>
-            <th>Actuacions</th>
+            <th scope="col">Tècnic</th>
+            <th scope="col">Total incidències</th>
+            <th scope="col">Resoltes</th>
+            <th scope="col">Temps total (min)</th>
+            <th scope="col">Actuacions</th>
         </tr>
     </thead>
     <tbody>

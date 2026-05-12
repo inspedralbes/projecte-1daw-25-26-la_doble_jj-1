@@ -1,5 +1,4 @@
 <?php include 'header.php'; ?>
-
 <?php
 date_default_timezone_set('Europe/Madrid');
 require_once 'conexion.php';
@@ -40,25 +39,33 @@ $conn->close();
 <h1>Afegir Actuació</h1>
 <p>Incidència #<?= $inc['id_incidencia'] ?> — <?= htmlspecialchars($inc['titol'] ?? '—') ?></p>
 
-<?php if ($missatge): ?><p><?= htmlspecialchars($missatge) ?></p><?php endif; ?>
-<?php if ($error): ?><p><?= htmlspecialchars($error) ?></p><?php endif; ?>
+<?php if ($missatge): ?><div class="alert alert-success" role="alert"><?= htmlspecialchars($missatge) ?></div><?php endif; ?>
+<?php if ($error): ?><div class="alert alert-danger" role="alert"><?= htmlspecialchars($error) ?></div><?php endif; ?>
 
-<form method="POST" action="actuacion.php?id=<?= $id ?>" onsubmit="return validar()">
-    <p>
-        <label for="descripcion">Descripció</label><br>
-        <textarea id="descripcion" name="descripcion" rows="5" cols="40"><?= (isset($_POST['descripcion']) && $error) ? htmlspecialchars($_POST['descripcion']) : '' ?></textarea>
-        <br><small id="contador" style="color:gray">0 caràcters (mínim 20)</small>
-    </p>
-    <p>
-        <label for="tiempo">Temps (minuts)</label><br>
-        <input type="number" id="tiempo" name="tiempo" min="1"
+<form method="POST" action="actuacion.php?id=<?= $id ?>" onsubmit="return validar()" novalidate>
+
+    <div class="mb-3">
+        <label for="descripcion" class="form-label">Descripció *</label>
+        <textarea id="descripcion" name="descripcion" class="form-control" rows="5"
+                  aria-required="true" aria-describedby="comptador"><?= (isset($_POST['descripcion']) && $error) ? htmlspecialchars($_POST['descripcion']) : '' ?></textarea>
+        <small id="comptador" class="form-text text-muted">0 caràcters (mínim 20)</small>
+    </div>
+
+    <div class="mb-3">
+        <label for="tiempo" class="form-label">Temps (minuts) *</label>
+        <input type="number" id="tiempo" name="tiempo" class="form-control" min="1"
+               aria-required="true"
                value="<?= (isset($_POST['tiempo']) && $error) ? intval($_POST['tiempo']) : '' ?>">
-    </p>
-    <p>
-        <input type="checkbox" id="visible" name="visible" <?= isset($_POST['visible']) ? 'checked' : '' ?>>
-        <label for="visible">Visible per l'usuari</label>
-    </p>
-    <p id="error-js" style="color:red; display:none"></p>
+    </div>
+
+    <div class="mb-3 form-check">
+        <input type="checkbox" id="visible" name="visible" class="form-check-input"
+               <?= isset($_POST['visible']) ? 'checked' : '' ?>>
+        <label for="visible" class="form-check-label">Visible per l'usuari</label>
+    </div>
+
+    <div id="error-js" class="alert alert-danger" role="alert" style="display:none"></div>
+
     <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
 
@@ -69,12 +76,12 @@ $conn->close();
 <script>
 document.getElementById('descripcion').addEventListener('input', function() {
     var total = this.value.length;
-    var contador = document.getElementById('contador');
-    contador.innerText = total + ' caràcters (mínim 20)';
+    var comptador = document.getElementById('comptador');
+    comptador.innerText = total + ' caràcters (mínim 20)';
     if (total >= 20) {
-        contador.style.color = 'green';
+        comptador.style.color = 'green';
     } else {
-        contador.style.color = 'red';
+        comptador.style.color = 'red';
     }
 });
 

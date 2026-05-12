@@ -33,9 +33,10 @@ include 'header.php';
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Administrador</h1>                 
-    <div class="d-flex flex-column gap-2" style="min-width:380px">
+    <div class="d-flex flex-row gap-3" style="min-width:180px">
         <a href="informe_departamentos.php" class="btn btn-outline-primary btn-sm">Informe departaments</a>
         <a href="informe_tecnicos.php" class="btn btn-outline-primary btn-sm">Informe tècnics</a>
+        <a href="informe_tecnicos.php" class="btn btn-outline-primary btn-sm">Estadisticas de acceso</a>
     </div>
 </div>
 

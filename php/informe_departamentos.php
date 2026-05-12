@@ -22,12 +22,13 @@ $conn->close();
 
 <div class="table-responsive">
 <table class="table table-bordered table-hover align-middle">
+    <caption>Resum d'incidències i temps per departament</caption>
     <thead class="table-primary">
         <tr>
-            <th>Departament</th>
-            <th>Total incidències</th>
-            <th>Resoltes</th>
-            <th>Temps total (min)</th>
+            <th scope="col">Departament</th>
+            <th scope="col">Total incidències</th>
+            <th scope="col">Resoltes</th>
+            <th scope="col">Temps total (min)</th>
         </tr>
     </thead>
     <tbody>

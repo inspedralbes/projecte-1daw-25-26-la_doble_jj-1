@@ -38,32 +38,35 @@ $conn->close();
 
 <h1 class="mb-4">Consultar Incidències</h1>
 
-<form method="GET" action="consultar.php" class="d-flex gap-2 mb-4">
-    <input type="number" name="id" min="1" class="form-control w-auto"
-           placeholder="Número d'incidència" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>">
+<form method="GET" action="consultar.php" class="d-flex gap-2 mb-4" role="search">
+    <label for="id" class="visually-hidden">Número d'incidència</label>
+    <input type="number" id="id" name="id" min="1" class="form-control w-auto"
+           placeholder="Número d'incidència" value="<?= htmlspecialchars($_GET['id'] ?? '') ?>"
+           aria-label="Número d'incidència">
     <button type="submit" class="btn btn-primary">Buscar</button>
     <?php if ($buscar_id): ?>
-        <a href="consultar.php" class="btn btn-primary">Veure totes</a>
+        <a href="consultar.php" class="btn btn-outline-secondary">Veure totes</a>
     <?php endif; ?>
 </form>
 
 <?php if ($buscar_id && empty($incidencies)): ?>
-    <div class="alert alert-warning">No s'ha trobat cap incidència amb l'ID #<?= $buscar_id ?>.</div>
+    <div class="alert alert-warning" role="alert">No s'ha trobat cap incidència amb l'ID #<?= $buscar_id ?>.</div>
 <?php elseif (empty($incidencies)): ?>
-    <div class="alert alert-info">No hi ha incidències registrades.</div>
+    <div class="alert alert-info" role="alert">No hi ha incidències registrades.</div>
 <?php else: ?>
 
 <div class="table-responsive">
 <table class="table table-bordered table-hover align-middle">
+    <caption>Llistat d'incidències i el seu estat</caption>
     <thead class="table-primary">
         <tr>
-            <th>ID</th>
-            <th>Títol</th>
-            <th>Descripció</th>
-            <th>Departament</th>
-            <th>Data</th>
-            <th>Estat</th>
-            <th>Actuacions</th>
+            <th scope="col">ID</th>
+            <th scope="col">Títol</th>
+            <th scope="col">Descripció</th>
+            <th scope="col">Departament</th>
+            <th scope="col">Data</th>
+            <th scope="col">Estat</th>
+            <th scope="col">Actuacions</th>
         </tr>
     </thead>
     <tbody>
@@ -73,9 +76,9 @@ $conn->close();
         elseif (!empty($inc['tecnico'])) $estat = 'En procés';
         else                             $estat = 'Pendent';
 
-        if ($estat === 'Resolta')   $badge = 'success';
+        if ($estat === 'Resolta')       $badge = 'success';
         elseif ($estat === 'En procés') $badge = 'warning';
-        else                        $badge = 'secondary';
+        else                            $badge = 'secondary';
     ?>
     <tr>
         <td><?= $inc['id_incidencia'] ?></td>
