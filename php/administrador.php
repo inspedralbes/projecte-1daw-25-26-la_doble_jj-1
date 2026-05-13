@@ -29,6 +29,8 @@ $conn->close();
 include 'header.php';
 ?>
 
+<?php require_once 'logger.php'; ?>
+
 <main>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -36,7 +38,7 @@ include 'header.php';
     <div class="d-flex flex-row gap-3" style="min-width:180px">
         <a href="informe_departamentos.php" class="btn btn-outline-primary btn-sm">Informe departaments</a>
         <a href="informe_tecnicos.php" class="btn btn-outline-primary btn-sm">Informe tècnics</a>
-        <a href="informe_tecnicos.php" class="btn btn-outline-primary btn-sm">Estadisticas de acceso</a>
+        <a href="estadisticas_acesso.php" class="btn btn-outline-primary btn-sm">Estadisticas de acceso</a>
     </div>
 </div>
 

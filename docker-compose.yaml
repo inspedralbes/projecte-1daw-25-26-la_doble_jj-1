@@ -1,8 +1,9 @@
-# Hi ha 3 contenidors
+# Hi ha 4 contenidors
 # 1. php amb apache (la nostra aplicació web) que la trobaràs a http://localhost:8080
 # 2. mysql (la base de dades), que no és accessible des de l'exterior (el primer cop pot trigar diversos minuts, mireu els logs)
 # 3. adminer (un client web per gestionar el mysql), que la trobaràs a http://localhost:8081
-
+# 4. mongodb (base de dades per logs), accessible internament
+# 5. mongo-express (client web per gestionar el mongodb), que la trobaràs a http://localhost:8082
 
 services:
   web:
@@ -18,8 +19,10 @@ services:
     environment:
       VAR1: "sóc una pera i estic al docker-compose"
       VAR2: ${VAR2}
+      MONGODB_URI: "mongodb://usuari:paraula_de_pas@mongodb:27017/logs?authSource=admin"
     depends_on:
       - db
+      - mongodb
 
   db:
     # Tota la informació d'aquesta imatge està https://dockerhub.com/_/mysql
@@ -43,13 +46,37 @@ services:
       - ./db_data:/var/lib/mysql
       - ./db_init:/docker-entrypoint-initdb.d
 
-
-# Aquesta imatge és un client web per gestionar el mysql via web
-# està disponible a http://localhost:8081
-# i les credencials són les del mysql (per que "simplement" es connecta al mysql)
+  # Aquesta imatge és un client web per gestionar el mysql via web
+  # està disponible a http://localhost:8081
+  # i les credencials són les del mysql (per que "simplement" es connecta al mysql)
   adminer:
     image: adminer
     ports:
       - "8081:8080"
     depends_on:
       - db
+
+  mongodb:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: usuari
+      MONGO_INITDB_ROOT_PASSWORD: paraula_de_pas
+    ports:
+      - "27017:27017"
+    # La carpeta de mongodb ha d'estar al .gitignore per no pujar-la al repositori
+    volumes:
+      - ./db_data2:/data/db
+
+  # Mongo Express és un client web per gestionar el mongodb via web
+  # està disponible a http://localhost:8082
+  mongo-express:
+    image: mongo-express
+    ports:
+      - "8082:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: usuari
+      ME_CONFIG_MONGODB_ADMINPASSWORD: paraula_de_pas
+      ME_CONFIG_MONGODB_URL: "mongodb://usuari:paraula_de_pas@mongodb:27017/"
+      ME_CONFIG_BASICAUTH: "false"
+    depends_on:
+      - mongodb
