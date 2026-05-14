@@ -1,4 +1,7 @@
+<?php require_once 'logger.php'; ?>
+
 <?php include 'header.php'; ?>
+
 <?php
 require_once 'conexion.php';
 

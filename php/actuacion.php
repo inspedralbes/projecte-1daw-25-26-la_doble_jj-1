@@ -1,4 +1,7 @@
+<?php require_once 'logger.php'; ?>
+
 <?php include 'header.php'; ?>
+
 <?php
 date_default_timezone_set('Europe/Madrid');
 require_once 'conexion.php';
@@ -11,6 +14,10 @@ if ($id === 0) { header("Location: index.php"); exit; }
 
 $inc = $conn->query("SELECT id_incidencia, titol FROM incidencia WHERE id_incidencia = $id")->fetch_assoc();
 if (!$inc) { echo "<p>Incidència no trobada.</p>"; exit; }
+
+$actuacions = [];
+$res_act = $conn->query("SELECT descripcion, data, tiempo, visible FROM actuacio WHERE incidencia = $id ORDER BY data ASC");
+if ($res_act) while ($a = $res_act->fetch_assoc()) $actuacions[] = $a;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $descripcion = trim($conn->real_escape_string($_POST['descripcion']));
@@ -42,6 +49,38 @@ $conn->close();
 <?php if ($missatge): ?><div class="alert alert-success" role="alert"><?= htmlspecialchars($missatge) ?></div><?php endif; ?>
 <?php if ($error): ?><div class="alert alert-danger" role="alert"><?= htmlspecialchars($error) ?></div><?php endif; ?>
 
+
+<?php if (!empty($actuacions)): ?>
+<h2 class="mb-3">Actuacions realitzades</h2>
+<div class="table-responsive mb-4">
+<table class="table table-bordered table-hover align-middle">
+    <caption>Historial d'actuacions de la incidència #<?= $id ?></caption>
+    <thead class="table-primary">
+        <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Descripció</th>
+            <th scope="col">Temps (min)</th>
+            <th scope="col">Visible</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($actuacions as $a): ?>
+    <tr>
+        <td><?= date('d/m/Y H:i', strtotime($a['data'])) ?></td>
+        <td><?= htmlspecialchars($a['descripcion']) ?></td>
+        <td><?= $a['tiempo'] ?></td>
+        <td><?= $a['visible'] ? 'Sí' : 'No' ?></td>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+</div>
+<?php else: ?>
+<p class="text-muted mb-4">Encara no hi ha actuacions per aquesta incidència.</p>
+<?php endif; ?>
+
+
+<h2 class="mb-3">Nova actuació</h2>
 <form method="POST" action="actuacion.php?id=<?= $id ?>" onsubmit="return validar()" novalidate>
 
     <div class="mb-3">
@@ -78,11 +117,7 @@ document.getElementById('descripcion').addEventListener('input', function() {
     var total = this.value.length;
     var comptador = document.getElementById('comptador');
     comptador.innerText = total + ' caràcters (mínim 20)';
-    if (total >= 20) {
-        comptador.style.color = 'green';
-    } else {
-        comptador.style.color = 'red';
-    }
+    comptador.style.color = total >= 20 ? 'green' : 'red';
 });
 
 function validar() {

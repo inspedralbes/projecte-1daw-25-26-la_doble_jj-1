@@ -1,3 +1,5 @@
+<?php require_once 'logger.php'; ?>
+
 <style>
     body {
         background-color: #fcf8f8;
@@ -52,8 +54,6 @@
 </style>
 
 <?php include 'header.php'; ?>
-
-<?php require_once 'logger.php'; ?>
 
 <h1>Gestió d'Incidències</h1>
 

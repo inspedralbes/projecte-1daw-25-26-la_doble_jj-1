@@ -1,7 +1,5 @@
 db_data*
 
-db_data2/
-
 vendor/
-composer.lock
-db_data2/
+
+composer.lock*

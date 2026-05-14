@@ -1,4 +1,7 @@
+<?php require_once 'logger.php'; ?>
+
 <?php include 'header.php'; ?>
+
 <?php
 require_once 'conexion.php';
 
@@ -6,13 +9,18 @@ $result = $conn->query(
     "SELECT d.nom AS departament,
             COUNT(i.id_incidencia) AS total,
             SUM(CASE WHEN i.data_finalizacion IS NOT NULL THEN 1 ELSE 0 END) AS resoltes,
-            COALESCE(SUM(a.tiempo), 0) AS temps_total
+            (
+                SELECT COALESCE(SUM(a.tiempo), 0)
+                FROM actuacio a
+                JOIN incidencia i2 ON a.incidencia = i2.id_incidencia
+                WHERE i2.departamento = d.id_departamento
+            ) AS temps_total
      FROM departamento d
-     LEFT JOIN incidencia i  ON i.departamento = d.id_departamento
-     LEFT JOIN actuacio a    ON a.incidencia   = i.id_incidencia
+     LEFT JOIN incidencia i ON i.departamento = d.id_departamento
      GROUP BY d.id_departamento, d.nom
      ORDER BY total DESC"
 );
+
 $conn->close();
 ?>
 

@@ -1,3 +1,5 @@
+<?php require_once 'logger.php'; ?>
+
 <?php include 'header.php'; ?>
 <?php
 date_default_timezone_set('Europe/Madrid');
