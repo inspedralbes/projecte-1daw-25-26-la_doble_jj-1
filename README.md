@@ -1,86 +1,111 @@
-# PROYECTO_FINAL — 1DAW
+# 1DAW || Grup13 — Web Gestió d'Incidències
 
-## Descripció
+## Integrants del projecte
 
-Aplicació web per gestionar incidències informàtiques d'un institut. Qualsevol profesor/alumno pot obrir una incidència indicant la seva aula i descrivint el problema. El responsable informàtic la revisa, l'assigna a un tècnic segons el tipus d'avaria i li dona una prioritat. El tècnic registra les actuacions fetes fins que la incidència queda resolta.
+- Juan Jose Osorio Mejia
+- Jose Andres Guala Patiño
 
-link: http://a25juaosomej.dam.inspedralbes.cat/Proyecto_Final/index.php
+## Objectiu del projecte
 
-## Estructura del projecte
+Aplicació web per gestionar incidències informàtiques. Qualsevol persona pot obrir una incidència indicant el seu departament i descrivint el problema. El administrador informàtic la revisa, l'assigna a un tècnic i segons el tipus d'avaria li dona una prioritat. El tècnic registra les actuacions fetes fins que la incidència queda resolta.
+
+## Estat del projecte
+
+Funcional. L'aplicació està desplegada en producció amb totes les funcionalitats implementades.
+
+## Adreça web del projecte
+
+http://grup13.daw.inspedralbes.cat/proyecto_final/php/index.php
+
+---
+
+## Funcionalitats Principals
+
+### Per a Usuaris:
+
+- **Registre d'incidències:** Formulari per enviar incidències indicant el títol, el departament i la descripció del problema.
+- **Consulta d'estat:** Cerca per ID d'incidència per veure l'estat actual i les actuacions visibles fetes pels tècnics.
+
+### Per a Tècnics i Administradors:
+
+- **Gestió d'incidències:** Llistat interactiu per assignar prioritat, tipologia i tècnic responsable directament des de la taula.
+- **Registre d'actuacions:** Formulari per afegir actuacions a una incidència, amb temps invertit i visibilitat per a l'usuari.
+- **Estadístiques d'accés:** Panell amb gràfic de tendències per dia, top 5 pàgines visitades i log dels últims 10 accessos, alimentat per MongoDB.
+- **Informe per departaments:** Resum d'incidències i temps per departament.
+- **Informe per tècnics:** Resum d'incidències resoltes i temps per tècnic.
+
+---
+
+## Tecnologies Utilitzades
+
+- **Backend:** PHP procedural amb MySQLi
+- **Base de Dades Principal:** MySQL
+- **Base de Dades de Logs:** MongoDB
+- **Frontend:** HTML5,JavaScript
+- **Estils:** Bootstrap
+- **Llibreries PHP:** MongoDB PHP Library
+- **Gestió de dependències:** Composer
+- **Entorn de desenvolupament:** Docker
+---
+
+## Serveis Docker
+
+| Servei  | Descripció                        |
+|---------|-----------------------------------|
+| app     | Aplicació PHP/Apache              |
+| db      | Base de dades MySQL               |
+| mongodb | Base de dades de logs MongoDB     |
+
+---
+
+## Instal·lació i Configuració
+
+**1. Clonar el repositori:**
+
+```bash
+git clone https://github.com/inspedralbes/projecte-1daw-25-26-la_doble_jj-1.git
+cd projecte-1daw-25-26-la_doble_jj-1
 ```
-/projecte
-  connexio.php           → Connexió a la base de dades
-  index.php              → Pàgina d'inici, escull entre usuari o tècnic
-  crear_incidencia.php   → Formulari per registrar una nova incidència
-  incidencies.php        → Accés tècnic, mostra les incidències assignades
-  detall_incidencia.php  → Consulta l'estat i actuacions d'una incidència
-  afegir_actuacio.php    → Registra una nova actuació sobre una incidència
 
+**2. Configurar l'entorn:**
+
+Crear un fitxer `.env` dins de la carpeta `php/` amb les variables de connexió a MySQL i MongoDB.
+
+**3. Instal·lar dependències PHP:**
+
+```bash
+cd php
+composer install
 ```
 
-## Estructura de la base de dades
+**4. Aixecar els contenidors:**
 
-```sql
-CREATE TABLE tipo (
-    id_tipo INT(11) AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(100)
-);
-
-CREATE TABLE departamento (
-    id_departamento INT(11) AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(200)
-);
-
-CREATE TABLE tecnico (
-    id_tecnico INT(11) AUTO_INCREMENT PRIMARY KEY, 
-    nom VARCHAR(200)
-);
-
-CREATE TABLE incidencia (
-    id_incidencia INT(11) AUTO_INCREMENT PRIMARY KEY,
-    descripcion VARCHAR(2000),
-    data TIMESTAMP,
-    departamento INT(11),
-    tecnico INT(11),
-    tipo INT(11),
-    data_finalizacion DATE,
-    prioritat ENUM('Alta', 'Media', 'Baja'),
-    FOREIGN KEY (tecnico) REFERENCES tecnico(id_tecnico),
-    FOREIGN KEY (tipo) REFERENCES tipo(id_tipo),
-    FOREIGN KEY (departamento) REFERENCES departamento(id_departamento)
-);
-
-CREATE TABLE actuacio (
-    id_actuacio INT(11) AUTO_INCREMENT PRIMARY KEY,
-    descripcion VARCHAR(2000),
-    data TIMESTAMP,
-    tiempo INT(11),
-    incidencia INT(11),
-    visible INT(1),
-    FOREIGN KEY (incidencia) REFERENCES incidencia(id_incidencia)
-);
+```bash
+docker compose up
 ```
 
-## Camps dels formularis
+L'aplicació estarà disponible a http://localhost:8080
 
-### Registrar incidència
-| Camp | Tipus | Descripció |
-|---|---|---|
-| departamento | select | Departament de l'usuari |
-| descripcion | textarea | Descripció del problema |
+---
 
-### Registrar actuació
-| Camp | Tipus | Descripció |
-|---|---|---|
-| descripcion | textarea | Descripció de l'actuació |
-| tiempo | number | Temps invertit en minuts |
-| visible | checkbox | Si l'usuari pot veure l'actuació |
-| finalitzada | checkbox | Marca la incidència com a resolta |
+## Diagramas
 
-## Tecnologies utilitzades
-* PHP (procedural)
-* MySQLi (consultes preparades)
-* HTML5
-* Servidor: dam.inspedralbes.cat
-* JavaScript
-* MongoDB
+
+Diagrama de casos d'us:
+
+
+
+Diagrama del model E-R:
+
+
+
+Wireframe:
+
+
+
+
+
+## Pàgines amb validació WCAG AA
+
+- `actuacion.php`
+- `incidencias.php`
