@@ -96,8 +96,26 @@ Diagrama de casos d'us:
 
 
 
+
+
+
+
+
+
+
 Diagrama del model E-R:
 <img width="1122" height="871" alt="Diagrama E-R drawio" src="https://github.com/user-attachments/assets/0e6ca514-d069-49c9-8a63-72b07c7eaf15" />
+
+
+
+
+
+
+
+
+
+
+
 
 
 
