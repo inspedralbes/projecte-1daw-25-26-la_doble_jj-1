@@ -92,6 +92,7 @@ L'aplicació estarà disponible a http://localhost:8080
 
 
 Diagrama de casos d'us:
+<img width="511" height="631" alt="Diagrama de casos d&#39;us drawio" src="https://github.com/user-attachments/assets/13d5a057-f1d8-4a3b-9b05-cf8b8ece2a08" />
 
 
 
