@@ -1,4 +1,4 @@
-##1DAW || Grup13 — Web Gestió d'Incidències
+## 1DAW || Grup13 — Web Gestió d'Incidències
 ## Integrants del projecte
 - Juan Jose Osorio Mejia
 - Jose Andres Guala Patiño
