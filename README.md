@@ -102,6 +102,8 @@ Diagrama del model E-R:
 
 
 Wireframe:
+<img width="6485" height="4989" alt="Esquema de pantalles de l&#39;aplicació (1)" src="https://github.com/user-attachments/assets/63498197-2b6b-47c7-a427-74514d0b9eed" />
+
 
 
 
